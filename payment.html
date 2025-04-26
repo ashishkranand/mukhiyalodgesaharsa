@@ -83,93 +83,117 @@
     }
   </style>
 <script>
-    $(document).ready(function () {
-      $('#pay-btn').click(function (e) {
-        e.preventDefault();
-  
-        let valid = true;
-        $('.error').hide();
-  
-        const name = $('#name').val();
-        const email = $('#email').val();
-        const phone = $('#phone').val();
-        const block = $('#block').val();
-        const room = $('#room').val();
-        const amount = $('#amount').val();
-  
-        if (!name) {
-          $('#name-error').show();
-          valid = false;
-        }
-        if (!email) {
-          $('#email-error').show();
-          valid = false;
-        }
-        if (!phone) {
-          $('#phone-error').show();
-          valid = false;
-        }
-        if (!block) {
-          $('#block-error').show();
-          valid = false;
-        }
-        if (!room) {
-          $('#room-error').show();
-          valid = false;
-        }
-        if (!amount || amount <= 0) {
-          $('#amount-error').show();
-          valid = false;
-        }
-  
-        if (valid) {
-          const options = {
-            key: 'rzp_live_zL96ocfNLMnSk6',
-            amount: amount * 100,
-            currency: 'INR',
-            name: 'Mukhiya Lodge',
-            description: 'Room Payment',
-            handler: function (response) {
-              alert('Payment Successful! Payment ID: ' + response.razorpay_payment_id);
-              generatePDF(name, email, phone, block, room, amount, response.razorpay_payment_id);
-            },
-            prefill: {
-              name: name,
-              email: email,
-              contact: phone
-            },
-            theme: {
-              color: '#0d6efd'
-            }
-          };
-          const rzp = new Razorpay(options);
-          rzp.open();
-        }
-      });
+  $(document).ready(function () {
+    $('#pay-btn').click(function (e) {
+      e.preventDefault();
+
+      let valid = true;
+      $('.error').hide();
+
+      const name = $('#name').val();
+      const email = $('#email').val();
+      const phone = $('#phone').val();
+      const block = $('#block').val();
+      const room = $('#room').val();
+      const amount = $('#amount').val();
+
+      if (!name) {
+        $('#name-error').show();
+        valid = false;
+      }
+      if (!email) {
+        $('#email-error').show();
+        valid = false;
+      }
+      if (!phone) {
+        $('#phone-error').show();
+        valid = false;
+      }
+      if (!block) {
+        $('#block-error').show();
+        valid = false;
+      }
+      if (!room) {
+        $('#room-error').show();
+        valid = false;
+      }
+      if (!amount || amount <= 0) {
+        $('#amount-error').show();
+        valid = false;
+      }
+
+      if (valid) {
+        const options = {
+          key: 'rzp_live_zL96ocfNLMnSk6',
+          amount: amount * 100,
+          currency: 'INR',
+          name: 'Mukhiya Lodge',
+          description: 'Room Payment',
+          handler: function (response) {
+            showThankYou(name);
+            generatePDF(name, email, phone, block, room, amount, response.razorpay_payment_id);
+          },
+          prefill: {
+            name: name,
+            email: email,
+            contact: phone
+          },
+          theme: {
+            color: '#0d6efd'
+          }
+        };
+        const rzp = new Razorpay(options);
+        rzp.open();
+      }
     });
-  
-    function generatePDF(name, email, phone, block, room, amount, paymentId) {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.setFontSize(16);
-      doc.text('Mukhiya Lodge Payment Receipt', 20, 20);
-      doc.setFontSize(12);
-      doc.text(`Name: ${name}`, 20, 40);
-      doc.text(`Email: ${email}`, 20, 50);
-      doc.text(`Phone: ${phone}`, 20, 60);
-      doc.text(`Block: ${block}`, 20, 70);
-      doc.text(`Room No: ${room}`, 20, 80);
-      doc.text(`Amount Paid: ₹${amount}`, 20, 90);
-      doc.text(`Payment ID: ${paymentId}`, 20, 100);
-      doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 110);
-      doc.save('Mukhiya_Lodge_Receipt.pdf');
-    }
-     // Toggle function for mobile navbar
-     function toggleMenu() {
-      const navbar = document.querySelector('.navbar');
-      navbar.classList.toggle('active');
-    }
-  </script>
+  });
+
+  function showThankYou(name) {
+    $('main.page').html(`
+      <section style="text-align:center; padding: 50px;">
+        <h2>Thank You, ${name}!</h2>
+        <p>Your payment was successful. A PDF receipt has been downloaded for your reference.</p>
+      </section>
+    `);
+  }
+
+  function generatePDF(name, email, phone, block, room, amount, paymentId) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const titleY = 20;
+    doc.setFontSize(18);
+    doc.text('Mukhiya Lodge', 105, titleY, null, null, 'center');
+    doc.setFontSize(12);
+    doc.text('Gandhi Path, Saharsa, Bihar - 852201', 105, titleY + 10, null, null, 'center');
+    doc.text('Contact: +91-9876543210 | mukhiyalodge@email.com', 105, titleY + 18, null, null, 'center');
+
+    doc.line(20, titleY + 25, 190, titleY + 25); // separator
+
+    let y = titleY + 35;
+    doc.setFontSize(14);
+    doc.text('Payment Receipt', 105, y, null, null, 'center');
+
+    y += 15;
+    doc.setFontSize(12);
+    doc.text(`Name: ${name}`, 20, y);
+    doc.text(`Email: ${email}`, 20, y + 10);
+    doc.text(`Phone: ${phone}`, 20, y + 20);
+    doc.text(`Block: ${block}`, 20, y + 30);
+    doc.text(`Room No: ${room}`, 20, y + 40);
+    doc.text(`Amount Paid: ₹${amount}`, 20, y + 50);
+    doc.text(`Payment ID: ${paymentId}`, 20, y + 60);
+    doc.text(`Date: ${new Date().toLocaleString()}`, 20, y + 70);
+
+    doc.save(`Mukhiya_Lodge_Invoice_${Date.now()}.pdf`);
+  }
+
+  function toggleMenu() {
+    const navbar = document.querySelector('.navbar');
+    navbar.classList.toggle('active');
+  }
+</script>
+
   
 </head>
 <body>
