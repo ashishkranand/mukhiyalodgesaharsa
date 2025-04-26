@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment - Mukhiya Lodge</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    /* Navbar styles */
+    .navbar {
+      background: #0d6efd;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .navbar .logo {
+      height: 50px;
+    }
+
+    .navbar nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .navbar nav ul li a {
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .navbar nav ul li a:hover,
+    .navbar nav ul li a.active {
+      background: #0056b3;
+    }
+
+    /* Mobile menu styles */
+    .menu-icon {
+      display: none;
+      cursor: pointer;
+      font-size: 30px;
+      color: #fff;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .navbar nav ul {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        background: #0d6efd;
+        padding-top: 20px;
+      }
+
+      .navbar nav ul li a {
+        padding: 10px 20px;
+        text-align: center;
+      }
+
+      .menu-icon {
+        display: block;
+      }
+
+      .navbar.active nav ul {
+        display: flex;
+      }
+    }
+
+    /* Error message styles */
+    .error {
+      color: red;
+      font-size: 12px;
+      display: none;
+    }
+  </style>
+<script>
+    $(document).ready(function () {
+      $('#pay-btn').click(function (e) {
+        e.preventDefault();
+  
+        let valid = true;
+        $('.error').hide();
+  
+        const name = $('#name').val();
+        const email = $('#email').val();
+        const phone = $('#phone').val();
+        const block = $('#block').val();
+        const room = $('#room').val();
+        const amount = $('#amount').val();
+  
+        if (!name) {
+          $('#name-error').show();
+          valid = false;
+        }
+        if (!email) {
+          $('#email-error').show();
+          valid = false;
+        }
+        if (!phone) {
+          $('#phone-error').show();
+          valid = false;
+        }
+        if (!block) {
+          $('#block-error').show();
+          valid = false;
+        }
+        if (!room) {
+          $('#room-error').show();
+          valid = false;
+        }
+        if (!amount || amount <= 0) {
+          $('#amount-error').show();
+          valid = false;
+        }
+  
+        if (valid) {
+          const options = {
+            key: 'YOUR_RAZORPAY_KEY',
+            amount: amount * 100,
+            currency: 'INR',
+            name: 'Mukhiya Lodge',
+            description: 'Room Payment',
+            handler: function (response) {
+              alert('Payment Successful! Payment ID: ' + response.razorpay_payment_id);
+              generatePDF(name, email, phone, block, room, amount, response.razorpay_payment_id);
+            },
+            prefill: {
+              name: name,
+              email: email,
+              contact: phone
+            },
+            theme: {
+              color: '#0d6efd'
+            }
+          };
+          const rzp = new Razorpay(options);
+          rzp.open();
+        }
+      });
+    });
+  
+    function generatePDF(name, email, phone, block, room, amount, paymentId) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(16);
+      doc.text('Mukhiya Lodge Payment Receipt', 20, 20);
+      doc.setFontSize(12);
+      doc.text(`Name: ${name}`, 20, 40);
+      doc.text(`Email: ${email}`, 20, 50);
+      doc.text(`Phone: ${phone}`, 20, 60);
+      doc.text(`Block: ${block}`, 20, 70);
+      doc.text(`Room No: ${room}`, 20, 80);
+      doc.text(`Amount Paid: ₹${amount}`, 20, 90);
+      doc.text(`Payment ID: ${paymentId}`, 20, 100);
+      doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 110);
+      doc.save('Mukhiya_Lodge_Receipt.pdf');
+    }
+     // Toggle function for mobile navbar
+     function toggleMenu() {
+      const navbar = document.querySelector('.navbar');
+      navbar.classList.toggle('active');
+    }
+  </script>
+  
+</head>
+<body>
+  <header class="navbar">
+    <img src="logo.png" alt="Mukhiya Lodge Logo" class="logo">
+    <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="payment.html" class="active">Payment</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="page">
+    <h1>Make a Payment</h1>
+    <p>Securely pay your rent or deposit online using Razorpay.</p>
+
+    <form id="payment-form" class="payment-form">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" required>
+      <div id="name-error" class="error">Please enter your name.</div>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+      <div id="email-error" class="error">Please enter a valid email.</div>
+
+      <label for="phone">Phone:</label>
+      <input type="tel" id="phone" required>
+      <div id="phone-error" class="error">Please enter a valid phone number.</div>
+
+      <label for="phone">Block:</label>
+      <input type="text" id="block" required>
+      <div id="block-error" class="error">Please enter a valid block.</div>
+
+      <label for="phone">Room No.:</label>
+      <input type="text" id="room" required>
+      <div id="room-error" class="error">Please enter a valid room no.</div>
+
+      <label for="amount">Amount (INR):</label>
+      <input type="number" id="amount" required min="1">
+      <div id="amount-error" class="error">Please enter a valid amount greater than 0.</div>
+
+      <button type="button" id="pay-btn">Make Payment</button>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Mukhiya Lodge |
+      <a href="shipping.html">Shipping</a> |
+      <a href="terms.html">Terms</a> |
+      <a href="refunds.html">Refunds</a>
+    </p>
+  </footer>
+</body>
+</html>

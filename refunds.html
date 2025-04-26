@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Refund Policy - Mukhiya Lodge</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+     /* Navbar styles */
+     .navbar {
+     background: #0d6efd;
+     padding: 15px 30px;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     flex-wrap: wrap;
+   }
+
+   .navbar .logo {
+     height: 50px;
+   }
+
+   .navbar nav ul {
+     list-style: none;
+     display: flex;
+     gap: 20px;
+   }
+
+   .navbar nav ul li a {
+     color: #fff;
+     padding: 8px 15px;
+     border-radius: 5px;
+     transition: background 0.3s;
+   }
+
+   .navbar nav ul li a:hover,
+   .navbar nav ul li a.active {
+     background: #0056b3;
+   }
+
+   /* Mobile menu styles */
+   .menu-icon {
+     display: none;
+     cursor: pointer;
+     font-size: 30px;
+     color: #fff;
+   }
+
+   /* Mobile responsiveness */
+   @media (max-width: 768px) {
+     .navbar nav ul {
+       display: none;  /* Hide navigation links on mobile */
+       width: 100%;
+       flex-direction: column;
+       align-items: center;
+       gap: 15px;
+       background: #0d6efd;
+       padding-top: 20px;
+     }
+
+     .navbar nav ul li a {
+       padding: 10px 20px;
+       text-align: center;
+     }
+
+     .menu-icon {
+       display: block;
+     }
+
+     .navbar.active nav ul {
+       display: flex;  /* Show navigation links when the menu is toggled */
+     }
+   }
+    .refund-section {
+      padding: 3rem 1rem;
+      max-width: 900px;
+      margin: auto;
+      animation: fadeInUp 1s ease-in-out;
+    }
+
+    .refund-section h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      color: #0077cc;
+      margin-bottom: 1rem;
+    }
+
+    .refund-section p {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: #444;
+    }
+
+    .refund-details {
+      line-height: 1.8;
+      font-size: 1.1rem;
+      color: #444;
+    }
+
+    .refund-details ul {
+      margin: 1rem 0;
+    }
+
+    .refund-details li {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    .refund-info {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 1.2rem;
+    }
+
+    .refund-info p {
+      margin: 0.5rem 0;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .refund-section {
+        padding: 2rem 0;
+      }
+
+      .refund-section h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <img src="logo.png" alt="Mukhiya Lodge Logo" class="logo">
+    <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+    
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="payment.html">Payment</a></li>
+        <li><a href="shipping.html">Rental Policy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="refunds.html" class="active">Refunds</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="refund-section">
+    <h1>Refund Policy</h1>
+    <p>We at Mukhiya Lodge are committed to providing you with the best service. In case of cancellation or refund requests, please read our policy carefully.</p>
+
+    <div class="refund-details">
+      <h3>Refund Eligibility:</h3>
+      <ul>
+        <li><strong>Cancellation 24 Hours Prior to Check-in:</strong> If you cancel your booking 24 hours before the check-in time, you are eligible for a full refund of the booking amount.</li>
+        <li><strong>Cancellation Within 24 Hours of Check-in:</strong> Cancellations made within 24 hours of your check-in time will incur a 50% charge of the total room rent. The remaining 50% will be refunded to you.</li>
+        <li><strong>No-Show or Same-Day Cancellations:</strong> If you fail to check in or cancel your booking on the same day as your reservation, no refund will be issued.</li>
+        <li><strong>Refund Processing Time:</strong> Refund requests will be processed within 7-10 business days. Refunds will be made using the same payment method used for booking.</li>
+      </ul>
+
+      <h3>Exceptions to the Refund Policy:</h3>
+      <ul>
+        <li><strong>Force Majeure:</strong> In the event of circumstances beyond our control (e.g., natural disasters, strikes, government-imposed travel restrictions), we will provide a full refund or offer an alternate booking date at no additional charge.</li>
+        <li><strong>Damage to Property:</strong> If the property is damaged during your stay, no refund will be issued, and you will be responsible for repair costs.</li>
+      </ul>
+
+      <h3>How to Request a Refund:</h3>
+      <ul>
+        <li>Contact our support team by emailing us at <strong>support@mukhiyalodge.com</strong>.</li>
+        <li>Provide your booking reference number and the reason for cancellation.</li>
+        <li>Refunds will be processed according to the above-mentioned conditions and timelines.</li>
+      </ul>
+    </div>
+
+    <div class="refund-info">
+      <p>If you have any questions regarding our refund policy, feel free to <a href="contact.html">contact us</a>.</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Mukhiya Lodge |
+      <a href="shipping.html">Rental Policy</a> |
+      <a href="terms.html">Terms</a> |
+      <a href="contact.html">Contact</a>
+    </p>
+  </footer>
+  <script>
+    function toggleMenu() {
+      const navbar = document.querySelector('.navbar');
+      navbar.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>
